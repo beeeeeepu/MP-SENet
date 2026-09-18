@@ -85,7 +85,9 @@ def train(rank, a, h):
                               pin_memory=True,
                               drop_last=True)
     if rank == 0:
-        validset = Dataset(validation_indexes, a.input_clean_wavs_dir, a.input_noisy_wavs_dir, h.segment_size, h.sampling_rate,
+        validation_clean_dir = a.validation_clean_wavs_dir or a.input_clean_wavs_dir
+        validation_noisy_dir = a.validation_noisy_wavs_dir or a.input_noisy_wavs_dir
+        validset = Dataset(validation_indexes, validation_clean_dir, validation_noisy_dir, h.segment_size, h.sampling_rate,
                            split=False, shuffle=False, n_cache_reuse=0, device=device)
         
         validation_loader = DataLoader(validset, num_workers=1, shuffle=False,
@@ -291,6 +293,8 @@ def main():
     parser.add_argument('--input_noisy_wavs_dir', default='VoiceBank+DEMAND/wavs_noisy')
     parser.add_argument('--input_training_file', default='VoiceBank+DEMAND/training.txt')
     parser.add_argument('--input_validation_file', default='VoiceBank+DEMAND/test.txt')
+    parser.add_argument('--validation_clean_wavs_dir', default=None)
+    parser.add_argument('--validation_noisy_wavs_dir', default=None)
     parser.add_argument('--checkpoint_path', default='cp_model')
     parser.add_argument('--config', default='')
     parser.add_argument('--training_epochs', default=400, type=int)

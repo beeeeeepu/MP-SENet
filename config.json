@@ -12,7 +12,7 @@
     "num_tsconformers": 4,
     "beta": 2.0,
 
-    "sampling_rate": 16000,
+    "sampling_rate": 48000,
     "segment_size": 32000,
     "n_fft": 400,
     "hop_size": 100,
